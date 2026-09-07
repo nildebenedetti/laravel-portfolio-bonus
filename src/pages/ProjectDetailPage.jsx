@@ -168,6 +168,7 @@ function ProjectDetailPage() {
                     <a
                     href={project.github_link}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="text-break small"
                     >
                     {project.github_link}
