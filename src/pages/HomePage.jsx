@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import '../components/ProjectCard.jsx';
+import ProjectCard from "../components/ProjectCard";
 
 function HomePage() {
   const [ projects, setProjects ] = useState([]);
@@ -8,7 +10,7 @@ function HomePage() {
   useEffect(() => {
     const fetchProjectsData = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/projects/FAKE`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/projects`);
 
       if (!response.ok) {
 
@@ -42,13 +44,15 @@ function HomePage() {
   if (isError) return <p>Error while fetching data.</p>;
 
   return <>
-      <h1>Home</h1>
-      <div className="container">
-        <ul>
+      <h1>All Projects</h1>
+      <div className="container mx-auto">
+        <div className="row justify-content-center g-3">
           {projects.map(( project ) => (
-            <li key={project.id}>{project.title}</li>
+            <div className="col-sm-12 col-md-6 col-lg-4" key={project.id}>
+              <ProjectCard project={project} />
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     </>
   ;
