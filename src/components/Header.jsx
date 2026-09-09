@@ -8,7 +8,7 @@ function Header() {
         <header>
             <nav className="navbar navbar-expand-lg bg-body-tertiary border-bottom">
                 <div className="container">
-                    <NavLink className="navbar-brand fw-semibold" to="/">MyApp</NavLink>
+                    <NavLink className="navbar-brand fw-semibold" to="/">Nilde B.</NavLink>
                     <button
                         className="navbar-toggler"
                         type="button"

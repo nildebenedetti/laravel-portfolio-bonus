@@ -44,7 +44,7 @@ function HomePage() {
   if (isError) return <p>Error while fetching data.</p>;
 
   return <>
-      <h1>All Projects</h1>
+      <h1 className="pb-4">All Projects</h1>
       <div className="container mx-auto">
         <div className="row justify-content-center g-3">
           {projects.map(( project ) => (
