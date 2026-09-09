@@ -48,7 +48,7 @@ function HomePage() {
       <div className="container mx-auto">
         <div className="row justify-content-center g-3">
           {projects.map(( project ) => (
-            <div className="col-sm-12 col-md-6 col-lg-4" key={project.id}>
+            <div className="col-sm-12 col-md-6 col-lg-4 d-flex align-items-stretch" key={project.id}>
               <ProjectCard project={project} />
             </div>
           ))}
