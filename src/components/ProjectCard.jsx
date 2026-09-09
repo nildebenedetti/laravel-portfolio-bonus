@@ -4,6 +4,14 @@ import styles from "./ProjectCard.module.css";
 function ProjectCard( { project } ) {
     const navigate = useNavigate();
 
+    const pillColors = {
+        "eCommerce": "br-green",
+        "Showcase Website": "bg-violet",
+        "AI": "bg-orange",
+        "API Service": "bg-red",
+        "CRM / ERP": "bg-blue"
+    }
+
     const btnClickHandler = () => {
         navigate(`/projects/${project.id}`);
 
@@ -21,14 +29,14 @@ function ProjectCard( { project } ) {
                     <span className="fst-italic">{project.client}</span>
                 </small>
             <div className="type-wrapper py-2">
-                <span className="badge text-bg-secondary rounded-pill">{project.type.name}</span>
+                <span className={`badge rounded-pill ${pillColors[project.type?.name] || ''}`}>{project.type.name}</span>
             </div>
             <div className="descriprion-wrapper">
                 <p className={styles.description}>{project.description}</p>
             </div>
             </div>
-            <div className="card-footer">
-            <button className="btn btn-dark" onClick={btnClickHandler}>See more</button>
+            <div className="px-4 pb-2 d-flex justify-content-end ">
+            <button className="btn btn-dark my-2" onClick={btnClickHandler}>See more</button>
             </div>
         </div>
         </>

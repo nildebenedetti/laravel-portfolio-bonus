@@ -10,3 +10,29 @@
   componenti. Per stili specifici di un singolo componente è preferibile
   usare un CSS Module (es. `NomeComponente.module.css`).
 */
+
+/* badge bg type eCommerce */
+.bg-green {
+    background-color: #7DBA37;
+}
+
+/* badge bg type showcase website */
+.bg-violet {
+    background-color: #ada2fd;
+}
+
+/* badge bg type AI */
+.bg-orange {
+    background-color: #D17353;
+}
+
+/* badge bg type API service */
+
+.bg-red {
+    background-color: #f61500;
+}
+
+/* badge bg type CRM / ERP */
+.bg-blue {
+    background-color: #242893;
+}
