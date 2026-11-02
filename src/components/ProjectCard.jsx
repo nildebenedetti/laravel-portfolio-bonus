@@ -3,6 +3,7 @@ import styles from "./ProjectCard.module.css";
 
 function ProjectCard( { project } ) {
     const navigate = useNavigate();
+    const baseUrl = import.meta.env.VITE_API_URL;
 
     const pillColors = {
         "eCommerce": "br-green",
@@ -28,12 +29,18 @@ function ProjectCard( { project } ) {
                     <br /> 
                     <span className="fst-italic">{project.client}</span>
                 </small>
+            { project.image && ( <>
+            <div className="image-wrapper">
+                <img src={`${baseUrl}/storage/${project.image}`} alt={project.alt_text} />
+            </div>
+            </> )}
             <div className="type-wrapper py-2">
                 <span className={`badge rounded-pill ${pillColors[project.type?.name] || ''}`}>{project.type.name}</span>
             </div>
-            <div className="descriprion-wrapper">
+            <div className="description-wrapper">
                 <p className={styles.description}>{project.description}</p>
             </div>
+                
             </div>
             <div className="px-4 pb-2 d-flex justify-content-end ">
             <button className="btn btn-dark my-2" onClick={btnClickHandler}>See more</button>
