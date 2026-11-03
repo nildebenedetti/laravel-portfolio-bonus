@@ -44,16 +44,16 @@ function HomePage() {
   if (isError) return <p>Error while fetching data.</p>;
 
   return <>
+      <div className="container mx-auto py-4">
       <h1 className="pb-4">All Projects</h1>
-      <div className="container mx-auto">
-        <div className="row justify-content-center g-3">
-          {projects.map(( project ) => (
-            <div className="col-sm-12 col-md-6 col-lg-4 d-flex align-items-stretch" key={project.id}>
-              <ProjectCard project={project} />
-            </div>
-          ))}
-        </div>
+      <div className="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
+        {projects.map((project) => (
+          <div className="col d-flex" key={project.id}>
+            <ProjectCard project={project} />
+          </div>
+        ))}
       </div>
+    </div>
     </>
   ;
 }
