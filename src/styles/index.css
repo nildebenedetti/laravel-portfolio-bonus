@@ -1,5 +1,12 @@
 /* ====== GLOBAL ========*/
 
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 h1, h2, h3, h4, h5 {
     font-family: "JetBrains Mono", monospace;
     font-optical-sizing: auto;
@@ -9,6 +16,8 @@ h1, h2, h3, h4, h5 {
 body, p, span, a, button {
     font-family: "Inter", sans-serif;
 }
+
+
 
 /* ====== UTILS ========= */
 
@@ -85,6 +94,6 @@ body, p, span, a, button {
 
 
 .custom-videoplayer {
-    height: 350px;
+    height: 380px;
 }
 
