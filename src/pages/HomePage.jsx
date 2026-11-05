@@ -50,7 +50,7 @@ function HomePage() {
         <h1>Welcome to my Portfolio</h1>
         <p className="py-3">Feel free to wander through my projects and explore in the way you prefer: go through code by accessing GitHub repositories or watch the demos and read the provided descriptions!</p>
         <p>Want to know more about me?</p>
-        <button className="btn-metal-dark mb-4">Go to Contacts</button>
+        <a href="/contacts" className="btn-metal-dark mb-4">Go to Contacts</a>
       </div>
       <h2 className="pb-4">All Projects</h2>
       <div className="row row-cols-1 row-cols-md-2 g-4 justify-content-center">

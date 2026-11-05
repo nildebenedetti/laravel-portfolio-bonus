@@ -6,7 +6,7 @@ function Header() {
 
     return (
         <header>
-            <nav className="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+            <nav className="jet-font navbar navbar-expand-lg bg-body-tertiary border-bottom">
                 <div className="container">
                     <NavLink className="navbar-brand fw-semibold" to="/">Nilde B.</NavLink>
                     <button
@@ -23,7 +23,7 @@ function Header() {
                                 <NavLink className="nav-link" to="/">Home</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/about">About</NavLink>
+                                <NavLink className="nav-link" to="/contacts">Contacts</NavLink>
                             </li>
                             <li className="nav-item ms-2">
                                 <button
