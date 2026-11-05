@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import styles from "./ProjectDetailPage.module.css";
+import YoutubePlayerComponent from "../components/YoutubePlayerComponent";
 
 function ProjectDetailPage() {
     const { id } = useParams();
@@ -89,6 +90,12 @@ function ProjectDetailPage() {
                     Client: {project.client || "N/A"}
                 </span>
                 </div>
+
+                {/* Youtube Player */}
+                { project.video_ID &&
+                    <YoutubePlayerComponent videoID={project.video_ID}/>
+                }
+
 
                 {/* Tech Stack Badges */}
                 {project.technologies && project.technologies.length > 0 && (
