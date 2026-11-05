@@ -2,12 +2,12 @@ function YoutubePlayerComponent( {videoID}) {
     const videoId = videoID;
 
     if (!videoID) {
-    return <div className="custom-videoplayer mb-4">Caricamento video...</div>;
+    return <div className="custom-videoplayer mb-4">Loading video...</div>;
     }
 
     return (
         
-        <div className="custom-videoplayer mb-4">
+        <div className="custom-videoplayer w-100 vh-75 mb-4">
             <iframe
                 src={`https://www.youtube.com/embed/${videoId}`}
                 title="Video YouTube"

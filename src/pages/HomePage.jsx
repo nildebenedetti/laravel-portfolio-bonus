@@ -6,6 +6,7 @@ function HomePage() {
   const [ projects, setProjects ] = useState([]);
   const [ isLoading, setIsLoading ] = useState(true);
   const [ isError, setIsError ] = useState(false);
+  const [ errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
     const fetchProjectsData = async () => {
@@ -45,7 +46,13 @@ function HomePage() {
 
   return <>
       <div className="container mx-auto py-4">
-      <h1 className="pb-4">All Projects</h1>
+      <div className="welcome py-3">
+        <h1>Welcome to my Portfolio</h1>
+        <p className="py-3">Feel free to wander through my projects and explore in the way you prefer: go through code by accessing GitHub repositories or watch the demos and read the provided descriptions!</p>
+        <p>Want to know more about me?</p>
+        <button className="btn-metal-dark mb-4">Go to Contacts</button>
+      </div>
+      <h2 className="pb-4">All Projects</h2>
       <div className="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
         {projects.map((project) => (
           <div className="col d-flex" key={project.id}>

@@ -50,7 +50,7 @@ function ProjectCard({ project }) {
             </div>
 
             <div className="px-4 pb-3 d-flex justify-content-end">
-                <button className="btn btn-dark btn-sm my-2" onClick={btnClickHandler}>See more</button>
+                <button className="btn-metal-dark my-2" onClick={btnClickHandler}>See more</button>
             </div>
         </div>
     );
