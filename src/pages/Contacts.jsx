@@ -1,5 +1,6 @@
 import { IoLogoLinkedin, IoMail,   } from "react-icons/io5";
 import { FaTelegram, FaGithub } from "react-icons/fa6";
+import styles from "./Contacts.module.css";
 
 function Contacts() {
     const mail = import.meta.env.VITE_EMAIL;
@@ -7,6 +8,7 @@ function Contacts() {
     const fullName = import.meta.env.VITE_FULLNAME;
     const telegram = import.meta.env.VITE_TELEGRAM;
     const github = import.meta.env.VITE_GITHUB;
+    const photo = import.meta.env.VITE_PHOTO_URL;
     
 
     const myName = fullName.split(" ")[0];
@@ -15,15 +17,24 @@ function Contacts() {
     return <>
 
     <div className="container mx-auto py-4">
-        <h1 className="mb-3 mt-3">It's me, {myName}!</h1>
+        <div className="d-flex align-items-center gap-3 mb-3 mt-3">
+            <div className={styles.photoSlot}>
+                {photo ? (
+                    <img src={photo} alt={fullName} className={styles.photo} />
+                ) : (
+                    <span className={styles.initials} aria-hidden="true">{myName.charAt(0)}</span>
+                )}
+            </div>
+            <h1 className="mb-0">It's me, {myName}!</h1>
+        </div>
         <br />
 
         <h3 className="my-3">About me</h3>
 
-        <p>A Full-stack Developer with an agency background and a degree in linguistics.
+        <p>A Full-stack Developer with an agency background and a degree in linguistic and cultural mediation.
         <br /><br />
-        Agency environment gave me a keen eye for business logics, and the intuition needed for balancing business goals with a smooth user experience.
-        <br /><br />
+        Working 5 years in a digital marketing agency gave me a keen eye for business logics, and the intuition needed for balancing business goals with a smooth UX.
+        <br />
         Studying languages trained me to decode complex structures and read between the lines of specifications. 
         <br /><br />Today, I bring that analytical mindset into building with PHP (Laravel) and JavaScript (React, Node).
         <br /><br />
@@ -33,7 +44,7 @@ function Contacts() {
         <br />
         I simply enjoy smoothing out friction, making things easy for the user and clear for whoever reads the codebase after me.
         <br /><br />
-        When I’m not polishing component hierarchies or backend logic, you’ll likely find me practicing martial arts, chasing word etymologies, or sipping tea in the city center.
+        When I’m not polishing component hierarchies or backend logic, you’ll likely find me practicing aerial acrobatics or kung fu, chasing word etymologies, or sipping tea in the city center.
         </p>
 
         <br />
