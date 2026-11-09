@@ -4,6 +4,7 @@ import MainLayout from "./layouts/MainLayout.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import ProjectDetailPage from "./pages/ProjectDetailPage.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import Contacts from "./pages/Contacts.jsx";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route element={<MainLayout />}>
             <Route index element={<HomePage />} />
+            <Route path="/contacts" element={<Contacts/>} />
             <Route path="projects/:id" element={<ProjectDetailPage />} />
             <Route path="*" element={<NotFound />} />
           </Route>
