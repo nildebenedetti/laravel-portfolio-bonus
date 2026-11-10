@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router";
 import styles from "./ProjectDetailPage.module.css";
 import YoutubePlayerComponent from "../components/YoutubePlayerComponent.jsx";
 import { ThemeContext } from "../contexts/ThemeContext.jsx";
+import ImageCarousel from "../components/ImageCarousel.jsx";
 
 function ProjectDetailPage() {
     const { id } = useParams();
@@ -106,7 +107,6 @@ function ProjectDetailPage() {
                     <YoutubePlayerComponent videoID={project.video_ID}/>
                 }
 
-
                 {/* Tech Stack Badges */}
                 {project.technologies && project.technologies.length > 0 && (
                 <div className="d-flex flex-wrap gap-2 mb-2">
@@ -124,24 +124,60 @@ function ProjectDetailPage() {
             </div>
 
             {/* GitHub Repository Box */}
-            {project.github_link && (
                 <div className={`${ theme === 'dark' ? 'bg-light' : 'bg-dark'} p-4 rounded-3 border mb-4 text-center text-md-start d-flex flex-column flex-md-row align-items-center justify-content-between gap-3`}>
-                <div>
-                    <h5 className={`mb-1 fw-bold ${ theme === 'dark' ? 'text-dark' : 'text-light' }`}>Project Repository</h5>
-                    <p className={`text-opacity-50 small mb-0 ${ theme === 'dark' ? 'text-dark' : 'text-light' }`}>
-                    Inspect the full source code on GitHub.
-                    </p>
+                    <div>
+                        <h5 className={`mb-1 fw-bold ${ theme === 'dark' ? 'text-dark' : 'text-light' }`}>Project Repository</h5>
+                        <p className={`text-opacity-50 small mb-0 ${ theme === 'dark' ? 'text-dark' : 'text-light' }`}>
+                        Inspect the full source code on GitHub.
+                        </p>
+                    </div>
+                    { project.github_link && (
+                    <a
+                        href={project.github_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-metal-dark btn-lg px-4 shadow-sm flex-shrink-0"
+                    >
+                        View on GitHub
+                    </a>
+                    )}
+
+                    { project.stack_type === 'full_stack' && <div className="d-flex flex-column align-items-center">
+                    { project.frontend_github_link && ( <>                
+                    <div className="d-flex-flex-column">
+                        <p className={`${ theme === 'dark' ? 'text-dark' : 'text-light' }`}>Frontend Repo:</p>
+                        <a
+                            href={project.frontend_github_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-metal-dark btn-lg px-4 shadow-sm flex-shrink-0"
+                        >
+                            View on GitHub
+                        </a>
+                    </div>
+                    </>)}
+
+                    { project.backend_github_link && ( <>                
+                    <div className="d-flex-flex-column mt-3">
+                        <p className={`${ theme === 'dark' ? 'text-dark' : 'text-light' }`}>Backend Repo:</p>
+                        <a
+                            href={project.backend_github_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-metal-dark btn-lg px-4 shadow-sm flex-shrink-0"
+                        >
+                            View on GitHub
+                        </a>
+                    </div>
+                    </>)}
+                    </div>}
                 </div>
-                <a
-                    href={project.github_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-metal-dark btn-lg px-4 shadow-sm flex-shrink-0"
-                >
-                    View on GitHub
-                </a>
-                </div>
+
+            {/* Image Carousel */}
+            {(project.image || project.image_pt_1 || project.image_pt_2 || project.image_pt_3 || project.image_pt_4) && (
+                <ImageCarousel project={project} />
             )}
+
 
             {/* Full Description */}
             <div>
