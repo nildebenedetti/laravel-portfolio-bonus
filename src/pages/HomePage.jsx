@@ -1,107 +1,78 @@
-import { useState, useEffect } from "react";
-import '../components/ProjectCard.jsx';
+import { useState, useEffect, useMemo } from "react";
+import { useSearchParams } from "react-router";
 import ProjectCard from "../components/ProjectCard.jsx";
 
 function HomePage() {
-  const [ types, setTypes ] = useState(null);
-  const [ technologies, setTechnologies ] = useState(null);
+  const [ types, setTypes ] = useState([]);
+  const [ technologies, setTechnologies ] = useState([]);
   const [ projects, setProjects ] = useState([]);
   const [ isLoading, setIsLoading ] = useState(true);
   const [ isError, setIsError ] = useState(false);
   const [ errorMsg, setErrorMsg] = useState(null);
+  const [ searchParams, setSearchParams ] = useSearchParams();
+
 
   // stack type range is set via this array
+  // `value` must match the stack_type values returned by the API
   const stackTypeRange = [
-    'full_stack',
-    'frontend',
-    'backend'
+    { value: 'full_stack', label: 'Full Stack' },
+    { value: 'front_end', label: 'Frontend' },
+    { value: 'back_end', label: 'Backend' }
   ];
 
 
-  // one fetch for typesd and technologies
+  // single fetch: projects, types and technologies are all derived from the same response
   useEffect( () => {
-    async function fetchInitialParameters () {
+    async function fetchProjectsData () {
 
       try {
-        
+
         const response = await fetch(`${import.meta.env.VITE_API_URL}/projects`);
 
         if (!response.ok) {
 
             throw new Error(`Error HTTP: ${response.status}`);
-          
+
           }
 
-          const data = await response.json();
-        
-        const allProjects = Array.isArray(data) 
-          ? data 
-          : (data.allProjects || data.projects || data.data || []);
+        const data = await response.json();
 
-        const uniqueTypes = new Set();
+        const allProjects = Array.isArray(data)
+          ? data
+          : (data.data || data.allProjects || data.projects || []);
+
+        const uniqueTypesMap = new Map();
         const uniqueTechnologiesMap = new Map(); // evita duplicazioni
 
         allProjects.forEach( project => {
-          
-          uniqueTypes.add(project.type);
 
-        });
+          if (project.type && project.type.id) {
+            uniqueTypesMap.set(project.type.id, project.type);
+          }
 
-        setTypes([...uniqueTypes]);
-
-        allProjects.forEach(project => {
           if (Array.isArray(project.technologies)) {
             project.technologies.forEach(tech => {
               // Usiamo l'id come chiave: la Map sovrascrive automaticamente i doppioni
               uniqueTechnologiesMap.set(tech.id, tech);
             });
           }
+
         });
 
-        // Trasformiamo la Map pulita in un array finale di oggetti unici
-        const uniqueTechnologies = Array.from(uniqueTechnologiesMap.values());
-
-        setTechnologies([...uniqueTechnologies]);
-
-      } catch (err) {
-        console.error('error while loading Project Types and Technologies range:', err)
-      } 
-
-    }
-
-    fetchInitialParameters();   
-    
-
-  }, []);
-
-
-
-  useEffect(() => {
-    const fetchProjectsData = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/projects`);
-
-      if (!response.ok) {
-
-          throw new Error(`Errore HTTP: ${response.status}`);
-        
-        }
-
-        const { data } = await response.json();
-        
-
-        setProjects(data);
+        setProjects(allProjects);
+        setTypes(Array.from(uniqueTypesMap.values()));
+        setTechnologies(Array.from(uniqueTechnologiesMap.values()));
 
       } catch (error) {
-        
+
         console.error("error while fetching projects data", error);
         setIsError(true);
-
+        setErrorMsg(error.message);
 
       } finally {
-        
+
         setIsLoading(false);
-      
+
       }
     };
 
@@ -116,12 +87,81 @@ function HomePage() {
   //   console.log("Technologies aggiornate:", technologies);
   // }, [types, technologies, projects]);
 
+  // active filters are read from the URL, so they survive reloads and can be shared
+  const activeTypeIds = useMemo(
+    () => (searchParams.get('type') || '').split(',').filter(Boolean),
+    [searchParams]
+  );
+
+  // stack types
+  const activeStackTypes = useMemo(
+    () => (searchParams.get('stack_type') || '').split(',').filter(Boolean),
+    [searchParams]
+  );
+
+  // active technologies
+  const activeTechIds = useMemo(
+    () => (searchParams.get('technologies') || '').split(',').filter(Boolean),
+    [searchParams]
+  );
+
+
+  // filter handler: toggles one value inside a multi-value URL param
+  const handleFilterChange = (paramKey, value) => {
+    const stringValue = value.toString();
+
+    setSearchParams( prevParams => {
+      // work on a copy: never mutate the current searchParams object
+      const nextParams = new URLSearchParams(prevParams);
+      const currentValues = nextParams.get(paramKey) ? nextParams.get(paramKey).split(',') : [];
+
+      const updatedValues = currentValues.includes(stringValue)
+        ? currentValues.filter( val => val !== stringValue )
+        : [...currentValues, stringValue];
+
+      if (updatedValues.length > 0) {
+        nextParams.set(paramKey, updatedValues.join(','));
+      } else {
+        nextParams.delete(paramKey);
+      }
+
+      return nextParams;
+    });
+  }
+
+
   // useMemo hook to memoize projects list
-  // filter by category
-  // filter by technology
+  
+  const visibleProjects = useMemo( () => {
+
+    let list = [...projects];
+
+    // filter by type
+
+    if (activeTypeIds.length > 0) {
+      list = list.filter( project => project.type && activeTypeIds.includes(project.type.id.toString()));
+    }
+
+    // filter by stack type
+    if (activeStackTypes.length > 0) {
+      list = list.filter( project => project.stack_type && activeStackTypes.includes(project.stack_type) )
+    }
+
+    // filter by technology
+    if (activeTechIds.length > 0) {
+      list = list.filter(project => 
+        Array.isArray(project.technologies) && 
+        project.technologies.some(tech => activeTechIds.includes(tech.id.toString()))
+      );
+    }
+
+    return list;
+
+  }, [projects, activeTypeIds, activeStackTypes, activeTechIds]);
+  
 
   if (isLoading) return <p>Data is loading...</p>;
-  if (isError) return <p>Error while fetching data.</p>;
+  if (isError) return <p>Error while fetching data.{errorMsg && ` (${errorMsg})`}</p>;
 
   return <>
       <div className="container mx-auto py-4">
@@ -132,8 +172,44 @@ function HomePage() {
         <a href="/contacts" className="btn-metal-dark mb-4">Go to Contacts</a>
       </div>
       <h2 className="pb-4">All Projects</h2>
+      <div className="filterChips">
+        <div className="typeFilterChips mb-3">
+          <h5>Select Type:</h5>
+          { types.map( ( type ) => {
+
+            const isActive = activeTypeIds.includes(type.id.toString());
+
+            return <button key={type.id} 
+                          onClick={() => handleFilterChange('type',type.id) }
+                          className={`btn-metal-dark mx-1 my-2 ${ isActive ? 'active border-light bg-secondary' : ''}`}>{type.name}{isActive && "  ✓"}</button>
+          } )}
+        </div>
+        <div className="stackTypesFilterChips mb-3">
+          <h5>Select Architecture:</h5>
+          {
+            stackTypeRange.map( (stackType) => {
+              const isActive = activeStackTypes.includes(stackType.value);
+              return <button key={stackType.value}
+                            onClick={ () => ( handleFilterChange('stack_type', stackType.value)) }
+                            className={`btn-metal-dark mx-1 my-2 ${ isActive ? 'active border-light bg-secondary' : ''}`}>{stackType.label}{isActive && "  ✓"}
+              </button>
+            })
+          }
+        </div>
+        <div className="technologieFilterChips mb-3">
+          <h5>Select Technologies:</h5>
+          {
+            technologies.map( (tech) => {
+              const isActive = activeTechIds.includes(tech.id.toString());
+              return <button key={tech.id}
+                            onClick={ () => handleFilterChange('technologies', tech.id) }  
+                            className={`btn-metal-dark mx-1 my-2 ${isActive ? 'active border-light bg-secondary' : ''}`}>{tech.name}{isActive && "  ✓"}</button>
+            })
+          }
+        </div>
+      </div>
       <div className="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
-        {projects.map((project) => (
+        {visibleProjects.map((project) => (
           <div className="col d-flex" key={project.id}>
             <ProjectCard project={project} />
           </div>
