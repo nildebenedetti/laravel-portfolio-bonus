@@ -48,7 +48,14 @@ function ImageCarousel({ project }) {
                             className="d-block w-100" 
                             alt={img.alt || `Image ${index + 1} of ${project.title || 'project'}`} 
                         />
+
+                        {img.alt && (
+                            <div className="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-2">
+                                <p className="mb-0 text-white">{img.alt}</p>
+                            </div>
+                        )}
                     </div>
+
                 ))}
             </div>
 

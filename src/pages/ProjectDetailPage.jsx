@@ -4,6 +4,7 @@ import styles from "./ProjectDetailPage.module.css";
 import YoutubePlayerComponent from "../components/YoutubePlayerComponent.jsx";
 import { ThemeContext } from "../contexts/ThemeContext.jsx";
 import ImageCarousel from "../components/ImageCarousel.jsx";
+import { stackTypeRange } from "../utils/utilities.js";
 
 function ProjectDetailPage() {
     const { id } = useParams();
@@ -44,6 +45,13 @@ function ProjectDetailPage() {
         fetchProject();
 
     }, [ id ]);
+
+    if (!project) {
+        return <div className="container py-5 text-center">Caricamento in corso...</div>;
+    }
+
+    const stackLabel = stackTypeRange.find( (item) => project.stack_type === item.value)?.label || project.stack_type;
+
 
     if (isLoading) {
         return <>
@@ -106,6 +114,9 @@ function ProjectDetailPage() {
                 { project.video_ID &&
                     <YoutubePlayerComponent videoID={project.video_ID}/>
                 }
+
+                {/* Architecture */}
+                { project.stack_type &&  <h5 className="mb-3">Architecture: {stackLabel}</h5>}
 
                 {/* Tech Stack Badges */}
                 {project.technologies && project.technologies.length > 0 && (

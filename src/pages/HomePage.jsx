@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router";
 import ProjectCard from "../components/ProjectCard.jsx";
+import { stackTypeRange } from "../utils/utilities.js";
 
 function HomePage() {
   const [ types, setTypes ] = useState([]);
@@ -11,14 +12,6 @@ function HomePage() {
   const [ errorMsg, setErrorMsg] = useState(null);
   const [ searchParams, setSearchParams ] = useSearchParams();
 
-
-  // stack type range is set via this array
-  // `value` must match the stack_type values returned by the API
-  const stackTypeRange = [
-    { value: 'full_stack', label: 'Full Stack' },
-    { value: 'front_end', label: 'Frontend' },
-    { value: 'back_end', label: 'Backend' }
-  ];
 
 
   // single fetch: projects, types and technologies are all derived from the same response

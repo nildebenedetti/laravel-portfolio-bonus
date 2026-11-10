@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router'; 
 import styles from "./ProjectCard.module.css";
+import { stackTypeRange } from '../utils/utilities.js';
 
 function ProjectCard({ project }) {
     const navigate = useNavigate();
