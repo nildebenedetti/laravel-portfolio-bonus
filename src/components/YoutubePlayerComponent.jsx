@@ -43,7 +43,6 @@ function YoutubePlayerComponent({ videoID, title = "YouTube video player" }) {
                     loading="lazy"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                     referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
                     onLoad={() => setIsLoaded(true)}
                 />
             </div>

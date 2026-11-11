@@ -1,15 +1,13 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router";
 import styles from "./ProjectDetailPage.module.css";
-import YoutubePlayerComponent from "../components/YoutubePlayerComponent.jsx";
 import { ThemeContext } from "../contexts/ThemeContext.jsx";
-import ImageCarousel from "../components/ImageCarousel.jsx";
+import MediaCarousel from "../components/MediaCarousel.jsx";
 import { stackTypeRange } from "../utils/utilities.js";
 
 function ProjectDetailPage() {
     const { id } = useParams();
     const { theme } = useContext(ThemeContext);
-
     const [ project, setProject ] = useState(null);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ error, setError ] = useState(false);
@@ -109,16 +107,14 @@ function ProjectDetailPage() {
                 </div> </>
                 }
 
-                {/* Youtube Player */}
-                { project.video_ID &&
-                    <YoutubePlayerComponent
-                        videoID={project.video_ID}
-                        title={`${project.title} - project demo video`}
-                    />
-                }
 
                 {/* Architecture */}
                 { project.stack_type &&  <h5 className="mb-3">Architecture: {stackLabel}</h5>}
+
+                {/* Media Carousel */}
+                {(project.image || project.image_pt_1 || project.image_pt_2 || project.image_pt_3 || project.image_pt_4) && (
+                    <MediaCarousel project={project} />
+                )}
 
                 {/* Tech Stack Badges */}
                 {project.technologies && project.technologies.length > 0 && (
@@ -185,11 +181,6 @@ function ProjectDetailPage() {
                     </>)}
                     </div>}
                 </div>
-
-            {/* Image Carousel */}
-            {(project.image || project.image_pt_1 || project.image_pt_2 || project.image_pt_3 || project.image_pt_4) && (
-                <ImageCarousel project={project} />
-            )}
 
 
             {/* Full Description */}

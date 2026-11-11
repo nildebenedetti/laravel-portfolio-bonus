@@ -92,3 +92,118 @@ body, p, span, a, button {
     background-color: #242893;
 }
 
+/* ====== MEDIA CAROUSEL - THEME-AWARE CONTROLS ====== */
+
+/* White arrows in both themes. Drop-shadows give them contrast on light
+   images without changing their color. The filter is consumed by the
+   control buttons, so override the variable on the carousel itself. */
+.carousel.theme-dark,
+.carousel.theme-light {
+    --bs-carousel-control-icon-filter:
+        drop-shadow(0 0 1px rgba(0, 0, 0, 0.95))
+        drop-shadow(0 1px 3px rgba(0, 0, 0, 0.75)) !important;
+}
+
+/* Direct fallback in case another rule sets the filter on the buttons */
+.carousel.theme-dark .carousel-control-prev,
+.carousel.theme-dark .carousel-control-next,
+.carousel.theme-light .carousel-control-prev,
+.carousel.theme-light .carousel-control-next {
+    filter:
+        drop-shadow(0 0 1px rgba(0, 0, 0, 0.95))
+        drop-shadow(0 1px 3px rgba(0, 0, 0, 0.75)) !important;
+}
+
+/* Bootstrap dims the controls to 50%; keep them clearly visible */
+.carousel .carousel-control-prev,
+.carousel .carousel-control-next {
+    opacity: 0.9;
+}
+
+.carousel .carousel-control-prev:hover,
+.carousel .carousel-control-prev:focus,
+.carousel .carousel-control-next:hover,
+.carousel .carousel-control-next:focus {
+    opacity: 1;
+}
+
+/* Carousel images: never let them grow taller than the viewport */
+.carousel .carousel-item img {
+    max-height: 70vh;
+    object-fit: contain;
+    background-color: var(--bs-secondary-bg);
+}
+
+/* Tablet/desktop: keep image slides on the same 16:9 stage as the video,
+   so square images no longer take up the whole column/viewport height. */
+@media (min-width: 768px) {
+    .carousel .carousel-item img {
+        aspect-ratio: 16 / 9;
+        max-height: 60vh;
+    }
+}
+
+/* Caption: shrink to its content instead of stretching across the slide,
+   and leave clear space between it and the indicator pill. */
+.carousel .carousel-caption {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+    max-width: min(90%, 40rem);
+    bottom: 3.5rem;
+    text-align: center;
+}
+
+/* Indicators: dark pill + white bars so they stay readable over photos
+   and video in both themes. */
+.carousel .carousel-indicators {
+    width: fit-content;
+    max-width: calc(100% - 1.5rem);
+    margin-inline: auto;
+    margin-bottom: 0.75rem;
+    padding: 0.3rem 0.6rem;
+    gap: 0.45rem;
+    background-color: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+.carousel .carousel-indicators [data-bs-target] {
+    width: 1.75rem;
+    height: 0.35rem;
+    margin: 0;
+    border: 0;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.55);
+    opacity: 1;
+    transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+.carousel .carousel-indicators .active {
+    width: 2.5rem;
+    background-color: #fff;
+}
+
+@media (max-width: 575.98px) {
+    .carousel .carousel-indicators {
+        padding: 0.25rem 0.45rem;
+        gap: 0.35rem;
+    }
+
+    .carousel .carousel-indicators [data-bs-target] {
+        width: 1.35rem;
+    }
+
+    .carousel .carousel-indicators .active {
+        width: 2rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel .carousel-indicators [data-bs-target] {
+        transition: none;
+    }
+}
