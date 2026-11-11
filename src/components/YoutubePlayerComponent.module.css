@@ -1,0 +1,135 @@
+.player {
+    width: 100%;
+    margin: 0 0 1.5rem;
+}
+
+/* Fluid 16:9 frame: the height follows the available width at every breakpoint.
+   max-height keeps the player inside short landscape viewports. */
+.frame {
+    position: relative;
+    width: 100%;
+    /* Keep a true 16:9 ratio while still fitting short/landscape viewports */
+    max-width: calc(75vh * 16 / 9);
+    aspect-ratio: 16 / 9;
+    max-height: 75vh;
+    margin-inline: auto;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background-color: #0b0b0d;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.18);
+    isolation: isolate;
+}
+
+.iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    opacity: 0;
+    transition: opacity 250ms ease;
+}
+
+.isLoaded .iframe {
+    opacity: 1;
+}
+
+/* Skeleton shown while the embed boots, prevents the white flash */
+.placeholder {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: rgba(255, 255, 255, 0.75);
+    background-color: #17171a;
+    background-image: linear-gradient(110deg, #17171a 8%, #232328 18%, #17171a 33%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s linear infinite;
+    transition: opacity 200ms ease;
+}
+
+.isLoaded .placeholder {
+    opacity: 0;
+    pointer-events: none;
+    animation: none;
+}
+
+.spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid rgba(255, 255, 255, 0.25);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.placeholderText {
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+}
+
+.caption {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+.externalLink {
+    font-size: 0.875rem;
+    color: inherit;
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 150ms ease;
+}
+
+.externalLink:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.externalLink:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes shimmer {
+    to {
+        background-position-x: -200%;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .frame {
+        max-width: calc(60vh * 16 / 9);
+        max-height: 60vh;
+        border-radius: 0.5rem;
+    }
+
+    .placeholderText {
+        font-size: 0.8rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .placeholder,
+    .spinner {
+        animation: none;
+    }
+
+    .iframe,
+    .placeholder,
+    .externalLink {
+        transition: none;
+    }
+}

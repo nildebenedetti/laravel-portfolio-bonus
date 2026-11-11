@@ -1,14 +1,15 @@
 import { useState, useEffect, useContext } from "react";
-import { useParams, useNavigate, Link } from "react-router";
+import { useParams, Link } from "react-router";
 import styles from "./ProjectDetailPage.module.css";
-import YoutubePlayerComponent from "../components/YoutubePlayerComponent.jsx";
 import { ThemeContext } from "../contexts/ThemeContext.jsx";
+import MediaCarousel from "../components/MediaCarousel.jsx";
+import { stackTypeRange } from "../utils/utilities.js";
+import { FaGithub } from "react-icons/fa6";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 function ProjectDetailPage() {
     const { id } = useParams();
-    const navigate = useNavigate();
     const { theme } = useContext(ThemeContext);
-
     const [ project, setProject ] = useState(null);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ error, setError ] = useState(false);
@@ -44,6 +45,13 @@ function ProjectDetailPage() {
 
     }, [ id ]);
 
+    if (!project) {
+        return <div className="container py-5 text-center">Caricamento in corso...</div>;
+    }
+
+    const stackLabel = stackTypeRange.find( (item) => project.stack_type === item.value)?.label || project.stack_type;
+
+
     if (isLoading) {
         return <>
             <div className="container py-5 text-center">
@@ -66,7 +74,7 @@ function ProjectDetailPage() {
     }
 
     return <>
-        <div className="navigation-btn my-2">
+        <div className="navigation-btn my-2 align-self-start ms-3 mt-2">
             <Link to="/" className="btn btn-metal-dark my-2">
             &larr; Back to all Projects
             </Link>
@@ -80,35 +88,49 @@ function ProjectDetailPage() {
             {/* Project Header */}
             <div className="border-bottom pb-4 mb-4">
                 {/* Project Title */}
-                <h1 className="display-5 fw-bold text-capitalize my-3">
+                
+                <h1 className="display-5 fw-bold text-capitalize mt-3">
                 {project.title}
                 </h1>
 
+                {/* Live Link */}
+                {project.live_link && <div>
+                    <a href={project.live_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-secondary text-underlined"><FaExternalLinkAlt className="" /> Visit Live Website</a>
+                </div>}
+
                 {project.type?.name && (
-                <h5 >{project.type.name}</h5>
+                <h5 className="mt-3">{project.type.name}</h5>
                 )}
 
                 { project.client ? <>
-                <div className="d-flex flex-column align-items-start justify-content-start gap-2 mb-2">
+                <div className="d-flex flex-column align-items-start justify-content-start gap-2 mb-3">
                 <span>
                     Client: {project.client}
                 </span>
                 </div> 
-                </> :  <><div className="d-flex flex-column align-items-start justify-content-start gap-2 mb-2">
+                </> :  <><div className="d-flex flex-column align-items-start justify-content-start gap-2 mb-3">
                 <span>
                     Personal Project
                 </span>
                 </div> </>
                 }
+                
+                
 
-                {/* Youtube Player */}
-                { project.video_ID &&
-                    <YoutubePlayerComponent videoID={project.video_ID}/>
-                }
+                {/* Media Carousel */}
+                {(project.video_ID || project.image || project.image_pt_1 || project.image_pt_2 || project.image_pt_3 || project.image_pt_4) && (
+                    <MediaCarousel project={project} />
+                )}
 
+                {/* Architecture */}
+                { project.stack_type &&  <h5 className="mb-3">Architecture: {stackLabel}</h5>}
 
                 {/* Tech Stack Badges */}
-                {project.technologies && project.technologies.length > 0 && (
+                {project.technologies && project.technologies.length > 0 && <div className="d-flex align-items-baseline gap-2">
+                    <h5 className="mb-3">Technologies:</h5>
                 <div className="d-flex flex-wrap gap-2 mb-2">
                     {project.technologies.map((technology) => (
                     <span
@@ -120,28 +142,61 @@ function ProjectDetailPage() {
                     </span>
                     ))}
                 </div>
-                )}
+                </div>}
+                
+
             </div>
 
             {/* GitHub Repository Box */}
-            {project.github_link && (
-                <div className={`${ theme === 'dark' ? 'bg-light' : 'bg-dark'} p-4 rounded-3 border mb-4 text-center text-md-start d-flex flex-column flex-md-row align-items-center justify-content-between gap-3`}>
-                <div>
-                    <h5 className={`mb-1 fw-bold ${ theme === 'dark' ? 'text-dark' : 'text-light' }`}>Project Repository</h5>
-                    <p className={`text-opacity-50 small mb-0 ${ theme === 'dark' ? 'text-dark' : 'text-light' }`}>
-                    Inspect the full source code on GitHub.
-                    </p>
+                <div className={`${ theme === 'dark' ? 'bg-light' : 'bg-dark'} px-4 py-3 rounded-3 border mb-4 text-center text-md-start d-flex flex-column flex-md-row align-items-center justify-content-between gap-3`}>
+                    <div>
+                        <h5 className={`mb-1 fw-bold ${ theme === 'dark' ? 'text-dark' : 'text-light' }`}>{ project.stack_type === 'full_stack' ? 'Project Repositories' : 'Project Repository' }</h5>
+                        <p className={`text-opacity-50 small mb-0 ${ theme === 'dark' ? 'text-dark' : 'text-light' }`}>
+                        Inspect the full source code on GitHub.
+                        </p>
+                    </div>
+                    { project.github_link && (
+                    <a
+                        href={project.github_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-metal-dark btn-lg px-4 shadow-sm flex-shrink-0"
+                    >
+                        <FaGithub className="text-xl me-2"/> View on GitHub
+                    </a>
+                    )}
+
+                    { project.stack_type === 'full_stack' && <div className="d-flex flex-column align-items-center">
+                    { project.frontend_github_link && ( <>                
+                    <div className="d-flex-flex-column">
+                        <p className={`${ theme === 'dark' ? 'text-dark' : 'text-light' }`}>Frontend Repo:</p>
+                        <a
+                            href={project.frontend_github_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-metal-dark btn-lg px-4 shadow-sm flex-shrink-0"
+                        >
+                            <FaGithub className="text-xl me-2"/> View on GitHub
+                        </a>
+                    </div>
+                    </>)}
+
+                    { project.backend_github_link && ( <>                
+                    <div className="d-flex-flex-column mt-3">
+                        <p className={`${ theme === 'dark' ? 'text-dark' : 'text-light' }`}>Backend Repo:</p>
+                        <a
+                            href={project.backend_github_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-metal-dark btn-lg px-4 shadow-sm flex-shrink-0"
+                        >
+                            <FaGithub className="text-xl me-2"/> View on GitHub
+                        </a>
+                    </div>
+                    </>)}
+                    </div>}
                 </div>
-                <a
-                    href={project.github_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-metal-dark btn-lg px-4 shadow-sm flex-shrink-0"
-                >
-                    View on GitHub
-                </a>
-                </div>
-            )}
+
 
             {/* Full Description */}
             <div>
@@ -156,7 +211,7 @@ function ProjectDetailPage() {
 
         {/* Sidebar: Quick Info and Details */}
         <div className="col-lg-3">
-            <div className="card border-0 shadow-sm p-4 rounded-4 mb-4">
+            <div className="card border-0 p-4 mb-4">
             <h5 className="fw-bold mb-3 text-dark">Quick Details</h5>
 
             <ul className="list-group list-group-flush">
@@ -179,19 +234,49 @@ function ProjectDetailPage() {
                 </span>
                 </li>
 
-                {project.github_link && (
-                <li className="list-group-item bg-transparent px-0 py-3 border-bottom-0">
-                    <small className="text-muted d-block mb-1">Direct Link</small>
+                <li className="list-group-item bg-transparent px-0 py-3">
+                    <small className="text-muted d-block mb-1">Github</small>
+
+                {project.github_link && <div className="mb-3">
+                    <span className={`${ theme === 'dark' ? 'text-light' : 'text-dark' }fw-semibold `}><FaGithub className="text-xl me-1"/> Github Repo:</span><br />
                     <a
                     href={project.github_link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-break small"
+                    className="text-break small text-secondary"
                     >
                     {project.github_link}
                     </a>
-                </li>
-                )}
+                </div>
+                }
+
+                {project.frontend_github_link && <div className="mb-3">
+                    <span className={`${ theme === 'dark' ? 'text-light' : 'text-dark' }fw-semibold `}><FaGithub className="text-xl me-1"/> Frontend Repo:</span><br />
+                    <a
+                    href={project.frontend_github_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-break small text-secondary"
+                    >
+                    {project.frontend_github_link}
+                    </a>
+                </div>
+                }
+
+                {project.backend_github_link && <div className="mb-3">
+                    <span className={`${ theme === 'dark' ? 'text-light' : 'text-dark' }fw-semibold `}><FaGithub className="text-xl me-1"/> Backend Repo:</span><br />
+                    <a
+                    href={project.backend_github_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-break small text-secondary"
+                    >
+                    {project.backend_github_link}
+                    </a>
+                </div>
+                }
+
+            </li>
             </ul>
             </div>
         </div>
