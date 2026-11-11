@@ -5,11 +5,13 @@ import HomePage from "./pages/HomePage.jsx";
 import ProjectDetailPage from "./pages/ProjectDetailPage.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Contacts from "./pages/Contacts.jsx";
+import ScrollToTop from "./components/scrollToTop.jsx";
 
 function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
+      <ScrollToTop/>
         <Routes>
           <Route element={<MainLayout />}>
             <Route index element={<HomePage />} />
