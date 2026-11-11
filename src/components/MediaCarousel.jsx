@@ -26,9 +26,6 @@ function MediaCarousel({ project }) {
 
     mediaItems.push(...images);
 
-    console.log(mediaItems);
-    
-
     // check if video is present
     const hasVideo = Boolean(project.video_ID);
 

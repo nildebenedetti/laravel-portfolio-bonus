@@ -5,6 +5,7 @@ import { ThemeContext } from "../contexts/ThemeContext.jsx";
 import MediaCarousel from "../components/MediaCarousel.jsx";
 import { stackTypeRange } from "../utils/utilities.js";
 import { FaGithub } from "react-icons/fa6";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 function ProjectDetailPage() {
     const { id } = useParams();
@@ -88,12 +89,20 @@ function ProjectDetailPage() {
             <div className="border-bottom pb-4 mb-4">
                 {/* Project Title */}
                 
-                <h1 className="display-5 fw-bold text-capitalize my-3">
+                <h1 className="display-5 fw-bold text-capitalize mt-3">
                 {project.title}
                 </h1>
 
+                {/* Live Link */}
+                {project.live_link && <div>
+                    <a href={project.live_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-secondary text-underlined"><FaExternalLinkAlt className="" /> Visit Live Website</a>
+                </div>}
+
                 {project.type?.name && (
-                <h5 >{project.type.name}</h5>
+                <h5 className="mt-3">{project.type.name}</h5>
                 )}
 
                 { project.client ? <>
@@ -108,6 +117,8 @@ function ProjectDetailPage() {
                 </span>
                 </div> </>
                 }
+                
+                
 
                 {/* Media Carousel */}
                 {(project.video_ID || project.image || project.image_pt_1 || project.image_pt_2 || project.image_pt_3 || project.image_pt_4) && (
