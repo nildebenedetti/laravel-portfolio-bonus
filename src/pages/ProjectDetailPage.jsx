@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useParams, useNavigate, Link } from "react-router";
+import { useParams, Link } from "react-router";
 import styles from "./ProjectDetailPage.module.css";
 import YoutubePlayerComponent from "../components/YoutubePlayerComponent.jsx";
 import { ThemeContext } from "../contexts/ThemeContext.jsx";
@@ -8,7 +8,6 @@ import { stackTypeRange } from "../utils/utilities.js";
 
 function ProjectDetailPage() {
     const { id } = useParams();
-    const navigate = useNavigate();
     const { theme } = useContext(ThemeContext);
 
     const [ project, setProject ] = useState(null);
@@ -112,7 +111,10 @@ function ProjectDetailPage() {
 
                 {/* Youtube Player */}
                 { project.video_ID &&
-                    <YoutubePlayerComponent videoID={project.video_ID}/>
+                    <YoutubePlayerComponent
+                        videoID={project.video_ID}
+                        title={`${project.title} - project demo video`}
+                    />
                 }
 
                 {/* Architecture */}
