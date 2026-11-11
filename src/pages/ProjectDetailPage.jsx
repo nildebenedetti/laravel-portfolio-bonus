@@ -4,6 +4,7 @@ import styles from "./ProjectDetailPage.module.css";
 import { ThemeContext } from "../contexts/ThemeContext.jsx";
 import MediaCarousel from "../components/MediaCarousel.jsx";
 import { stackTypeRange } from "../utils/utilities.js";
+import { FaGithub } from "react-icons/fa6";
 
 function ProjectDetailPage() {
     const { id } = useParams();
@@ -72,7 +73,7 @@ function ProjectDetailPage() {
     }
 
     return <>
-        <div className="navigation-btn my-2">
+        <div className="navigation-btn my-2 align-self-start ms-3 mt-2">
             <Link to="/" className="btn btn-metal-dark my-2">
             &larr; Back to all Projects
             </Link>
@@ -86,6 +87,7 @@ function ProjectDetailPage() {
             {/* Project Header */}
             <div className="border-bottom pb-4 mb-4">
                 {/* Project Title */}
+                
                 <h1 className="display-5 fw-bold text-capitalize my-3">
                 {project.title}
                 </h1>
@@ -95,29 +97,29 @@ function ProjectDetailPage() {
                 )}
 
                 { project.client ? <>
-                <div className="d-flex flex-column align-items-start justify-content-start gap-2 mb-2">
+                <div className="d-flex flex-column align-items-start justify-content-start gap-2 mb-3">
                 <span>
                     Client: {project.client}
                 </span>
                 </div> 
-                </> :  <><div className="d-flex flex-column align-items-start justify-content-start gap-2 mb-2">
+                </> :  <><div className="d-flex flex-column align-items-start justify-content-start gap-2 mb-3">
                 <span>
                     Personal Project
                 </span>
                 </div> </>
                 }
 
+                {/* Media Carousel */}
+                {(project.video_ID || project.image || project.image_pt_1 || project.image_pt_2 || project.image_pt_3 || project.image_pt_4) && (
+                    <MediaCarousel project={project} />
+                )}
 
                 {/* Architecture */}
                 { project.stack_type &&  <h5 className="mb-3">Architecture: {stackLabel}</h5>}
 
-                {/* Media Carousel */}
-                {(project.image || project.image_pt_1 || project.image_pt_2 || project.image_pt_3 || project.image_pt_4) && (
-                    <MediaCarousel project={project} />
-                )}
-
                 {/* Tech Stack Badges */}
-                {project.technologies && project.technologies.length > 0 && (
+                {project.technologies && project.technologies.length > 0 && <div className="d-flex align-items-baseline gap-2">
+                    <h5 className="mb-3">Technologies:</h5>
                 <div className="d-flex flex-wrap gap-2 mb-2">
                     {project.technologies.map((technology) => (
                     <span
@@ -129,13 +131,15 @@ function ProjectDetailPage() {
                     </span>
                     ))}
                 </div>
-                )}
+                </div>}
+                
+
             </div>
 
             {/* GitHub Repository Box */}
-                <div className={`${ theme === 'dark' ? 'bg-light' : 'bg-dark'} p-4 rounded-3 border mb-4 text-center text-md-start d-flex flex-column flex-md-row align-items-center justify-content-between gap-3`}>
+                <div className={`${ theme === 'dark' ? 'bg-light' : 'bg-dark'} px-4 py-3 rounded-3 border mb-4 text-center text-md-start d-flex flex-column flex-md-row align-items-center justify-content-between gap-3`}>
                     <div>
-                        <h5 className={`mb-1 fw-bold ${ theme === 'dark' ? 'text-dark' : 'text-light' }`}>Project Repository</h5>
+                        <h5 className={`mb-1 fw-bold ${ theme === 'dark' ? 'text-dark' : 'text-light' }`}>{ project.stack_type === 'full_stack' ? 'Project Repositories' : 'Project Repository' }</h5>
                         <p className={`text-opacity-50 small mb-0 ${ theme === 'dark' ? 'text-dark' : 'text-light' }`}>
                         Inspect the full source code on GitHub.
                         </p>
@@ -147,7 +151,7 @@ function ProjectDetailPage() {
                         rel="noopener noreferrer"
                         className="btn btn-metal-dark btn-lg px-4 shadow-sm flex-shrink-0"
                     >
-                        View on GitHub
+                        <FaGithub className="text-xl me-2"/> View on GitHub
                     </a>
                     )}
 
@@ -161,7 +165,7 @@ function ProjectDetailPage() {
                             rel="noopener noreferrer"
                             className="btn btn-metal-dark btn-lg px-4 shadow-sm flex-shrink-0"
                         >
-                            View on GitHub
+                            <FaGithub className="text-xl me-2"/> View on GitHub
                         </a>
                     </div>
                     </>)}
@@ -175,7 +179,7 @@ function ProjectDetailPage() {
                             rel="noopener noreferrer"
                             className="btn btn-metal-dark btn-lg px-4 shadow-sm flex-shrink-0"
                         >
-                            View on GitHub
+                            <FaGithub className="text-xl me-2"/> View on GitHub
                         </a>
                     </div>
                     </>)}
@@ -196,7 +200,7 @@ function ProjectDetailPage() {
 
         {/* Sidebar: Quick Info and Details */}
         <div className="col-lg-3">
-            <div className="card border-0 shadow-sm p-4 rounded-4 mb-4">
+            <div className="card border-0 p-4 mb-4">
             <h5 className="fw-bold mb-3 text-dark">Quick Details</h5>
 
             <ul className="list-group list-group-flush">
@@ -219,19 +223,49 @@ function ProjectDetailPage() {
                 </span>
                 </li>
 
-                {project.github_link && (
-                <li className="list-group-item bg-transparent px-0 py-3 border-bottom-0">
-                    <small className="text-muted d-block mb-1">Direct Link</small>
+                <li className="list-group-item bg-transparent px-0 py-3">
+                    <small className="text-muted d-block mb-1">Github</small>
+
+                {project.github_link && <div className="mb-3">
+                    <span className={`${ theme === 'dark' ? 'text-light' : 'text-dark' }fw-semibold `}><FaGithub className="text-xl me-1"/> Github Repo:</span><br />
                     <a
                     href={project.github_link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-break small"
+                    className="text-break small text-secondary"
                     >
                     {project.github_link}
                     </a>
-                </li>
-                )}
+                </div>
+                }
+
+                {project.frontend_github_link && <div className="mb-3">
+                    <span className={`${ theme === 'dark' ? 'text-light' : 'text-dark' }fw-semibold `}><FaGithub className="text-xl me-1"/> Frontend Repo:</span><br />
+                    <a
+                    href={project.frontend_github_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-break small text-secondary"
+                    >
+                    {project.frontend_github_link}
+                    </a>
+                </div>
+                }
+
+                {project.backend_github_link && <div className="mb-3">
+                    <span className={`${ theme === 'dark' ? 'text-light' : 'text-dark' }fw-semibold `}><FaGithub className="text-xl me-1"/> Backend Repo:</span><br />
+                    <a
+                    href={project.backend_github_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-break small text-secondary"
+                    >
+                    {project.backend_github_link}
+                    </a>
+                </div>
+                }
+
+            </li>
             </ul>
             </div>
         </div>

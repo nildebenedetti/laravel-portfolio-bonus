@@ -47,16 +47,16 @@ function YoutubePlayerComponent({ videoID, title = "YouTube video player" }) {
                 />
             </div>
 
-            <figcaption className={styles.caption}>
+            {/* <figcaption className={styles.caption}>
                 <a
                     className={styles.externalLink}
                     href={watchUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    Watch on YouTube
+                    Project Demo Video
                 </a>
-            </figcaption>
+            </figcaption> */}
         </figure>
     );
 }

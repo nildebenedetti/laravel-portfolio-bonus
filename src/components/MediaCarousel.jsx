@@ -36,7 +36,8 @@ function MediaCarousel({ project }) {
 
     const carouselId = `carouselProject-${project.id || 'detail'}`;
 
-    return (
+    return <>
+            <h2 className="mt-4 mb-3">Project Gallery</h2>
         <div id={carouselId} 
             className={`carousel slide mb-4 ${theme === 'dark' ? 'theme-dark' : 'theme-light'}`}
             data-bs-interval="false">
@@ -112,7 +113,7 @@ function MediaCarousel({ project }) {
                 </>
             )}
         </div>
-    );
+    </>;
 }
 
 export default MediaCarousel;
