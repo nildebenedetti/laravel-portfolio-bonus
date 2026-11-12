@@ -105,16 +105,13 @@ function ProjectDetailPage() {
                 <h5 className="mt-3">{project.type.name}</h5>
                 )}
 
-                { project.client ? <>
-                <div className="d-flex flex-column align-items-start justify-content-start gap-2 mb-3">
-                <span>
-                    Client: {project.client}
-                </span>
-                </div> 
-                </> :  <><div className="d-flex flex-column align-items-start justify-content-start gap-2 mb-3">
-                <span>
+                { project.client ? <div className="d-flex align-items-baseline gap-1">
+                        <h6>Client:</h6>
+                        <p>{project.client}</p>
+                        </div> :  <><div className="d-flex flex-column align-items-start justify-content-start gap-2 mb-3">
+                <h6>
                     Personal Project
-                </span>
+                </h6>
                 </div> </>
                 }
                 
@@ -200,8 +197,8 @@ function ProjectDetailPage() {
 
             {/* Full Description */}
             <div>
-                <h4 className="fw-bold mb-3 text-dark">Project Description</h4>
-                <div className={`fs-5 lh-lg ${styles.description}`}>
+                <h4 className={`${ theme === 'dark' ? 'text-light' : 'text-dark' } mb-3`}>Project Description</h4>
+                <div className={`lh-lg ${styles.description}`}>
                 {project.description}
                 </div>
             </div>
@@ -220,10 +217,10 @@ function ProjectDetailPage() {
                 <span className={` ${ theme === 'dark' ? 'text-light' : 'text-dark' } fw-semibold`}>{project.title}</span>
                 </li>
 
-                <li className="list-group-item bg-transparent px-0 py-3">
+                {project.client && project.client !== null && (<li className="list-group-item bg-transparent px-0 py-3">
                 <small className="text-muted d-block">Client</small>
-                <span className={`fw-semibold ${ theme === 'dark' ? 'text-light' : 'text-dark' }`}>{project.client || "N/A"}</span>
-                </li>
+                <span className={`fw-semibold ${ theme === 'dark' ? 'text-light' : 'text-dark' }`}>{project.client }</span>
+                </li>)}
 
                 <li className="list-group-item bg-transparent px-0 py-3">
                 <small className="text-muted d-block">Tech Stack</small>
