@@ -1,0 +1,184 @@
+/* ====== SCROLL TO TOP ORB ======
+ * Same finish as .btn-metal-dark: titanium gradient, thin steel border,
+ * inset highlight and soft contact shadow. Circular instead of pill-shaped,
+ * quiet at rest, with the glow and lift reserved for hover/focus — matching
+ * the theme toggle in Header.
+ *
+ * Tokens are declared here on purpose: the module should not depend on a
+ * design-system stylesheet, and these values must stay in sync with the
+ * metal button palette in src/styles/index.css. */
+
+.scrollUpBtn {
+  --scroll-accent-rgb: 148, 163, 184; /* slate-400: a shadow on light, a halo on dark */
+  --scroll-dur: 0.2s;
+  --scroll-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --scroll-surface: linear-gradient(135deg, #2a2d32 0%, #17191c 50%, #202328 100%);
+  --scroll-surface-hover: linear-gradient(135deg, #33373e 0%, #1e2126 50%, #282c33 100%);
+  --scroll-surface-active: linear-gradient(135deg, #191b1e 0%, #22252a 100%);
+
+  --scroll-border: #3f444e;
+  --scroll-border-hover: #64748b;
+
+  --scroll-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.25);
+  --scroll-shadow-hover:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
+    0 6px 16px rgba(0, 0, 0, 0.3);
+  --scroll-shadow-active: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 1030; /* above page content, below Bootstrap modals/tooltips */
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+
+  color: #f1f5f9;
+  background: var(--scroll-surface);
+  border: 1px solid var(--scroll-border);
+  border-radius: 50%;
+  box-shadow: var(--scroll-shadow);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  /* Entry animation: no fill-mode, so once it ends the hover/active
+     transforms below are free to take over again. */
+  animation: btn-bloom-in 0.28s var(--scroll-ease);
+
+  transition:
+    color var(--scroll-dur) var(--scroll-ease),
+    border-color var(--scroll-dur) var(--scroll-ease),
+    box-shadow var(--scroll-dur) var(--scroll-ease),
+    transform var(--scroll-dur) var(--scroll-ease);
+}
+
+.scrollUpBtn svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  transition: transform var(--scroll-dur) var(--scroll-ease);
+}
+
+/* --- The glow, as its own layer ------------------------------------------
+
+ * z-index -1 keeps it inside the orb's stacking context (position: fixed
+ * creates one), so it can never slip behind the page. */
+.scrollUpBtn::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+
+  background: radial-gradient(
+    circle,
+    transparent 62%,
+    rgba(var(--scroll-accent-rgb), 0.35) 78%,
+    rgba(var(--scroll-accent-rgb), 0.12) 88%,
+    transparent 100%
+  );
+  filter: blur(8px);
+
+  /* Below 1 at rest: gives the hover transition somewhere to go and keeps
+     the orb from looking like a lamp left on. */
+  opacity: 0.45;
+  transition: opacity var(--scroll-dur) var(--scroll-ease);
+  animation: btn-breathe 5s ease-in-out infinite;
+}
+
+@keyframes btn-breathe {
+  0%,
+  100% {
+    transform: scale(0.96);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+/* Entry animation, kept for the component to apply while mounting. */
+@keyframes btn-bloom-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Hover / keyboard focus: the orb lifts, the steel edge warms up and the
+   bloom comes forward. Same cues as .btn-metal-dark, no colour flip. */
+.scrollUpBtn:hover,
+.scrollUpBtn:focus-visible {
+  color: #ffffff;
+  background: var(--scroll-surface-hover);
+  border-color: var(--scroll-border-hover);
+  box-shadow:
+    var(--scroll-shadow-hover),
+    0 0 0 1px rgba(var(--scroll-accent-rgb), 0.35);
+  transform: translateY(-2px);
+}
+
+.scrollUpBtn:hover::before,
+.scrollUpBtn:focus-visible::before {
+  opacity: 1;
+}
+
+/* The arrow rises a touch further than the orb, pointing where it will go. */
+.scrollUpBtn:hover svg,
+.scrollUpBtn:focus-visible svg {
+  transform: translateY(-2px);
+}
+
+.scrollUpBtn:focus-visible {
+  outline: 2px solid rgba(var(--scroll-accent-rgb), 0.85);
+  outline-offset: 3px;
+}
+
+/* Press: settle back down and compress, light pushed under the surface. */
+.scrollUpBtn:active {
+  background: var(--scroll-surface-active);
+  box-shadow: var(--scroll-shadow-active);
+  transform: translateY(0) scale(0.96);
+}
+
+.scrollUpBtn:active svg {
+  transform: translateY(0);
+}
+
+/* Smaller footprint on phones, where the orb competes with content. */
+@media (max-width: 575.98px) {
+  .scrollUpBtn {
+    right: 1rem;
+    bottom: 1rem;
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollUpBtn,
+  .scrollUpBtn::before,
+  .scrollUpBtn svg {
+    transition: none;
+    animation: none;
+  }
+
+  .scrollUpBtn:hover,
+  .scrollUpBtn:focus-visible,
+  .scrollUpBtn:active,
+  .scrollUpBtn:hover svg,
+  .scrollUpBtn:focus-visible svg,
+  .scrollUpBtn:active svg {
+    transform: none;
+  }
+}

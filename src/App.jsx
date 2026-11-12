@@ -5,7 +5,7 @@ import HomePage from "./pages/HomePage.jsx";
 import ProjectDetailPage from "./pages/ProjectDetailPage.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Contacts from "./pages/Contacts.jsx";
-import ScrollToTop from "./components/scrollToTop.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 
 function App() {
   return (
