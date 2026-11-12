@@ -30,6 +30,7 @@ function ProjectDetailPage() {
                 setError(null);
 
             } catch  (error) {
+                
 
                 console.error("error while fetching project data", error);
                 setError(error.message || "something went wrong while fetching project data");
@@ -46,7 +47,17 @@ function ProjectDetailPage() {
     }, [ id ]);
 
     if (!project) {
-        return <div className="container py-5 text-center">Caricamento in corso...</div>;
+        return <div className="container py-5 text-center">
+            <p>No Project available with provided id.</p>
+            <p> Check if you can find something interesting here!</p>    
+            {/* BACK TO ALL PROJECTS BTN */}
+            <div className="navigation-btn my-2 align-self-start mt-2">
+                <Link to="/" className="btn btn-metal-dark my-2">
+                &larr; Back to all Projects
+                </Link>
+            </div>
+
+        </div>;
     }
 
     const stackLabel = stackTypeRange.find( (item) => project.stack_type === item.value)?.label || project.stack_type;
@@ -74,17 +85,18 @@ function ProjectDetailPage() {
     }
 
     return <>
-        <div className="navigation-btn my-2 align-self-start ms-3 mt-2">
-            <Link to="/" className="btn btn-metal-dark my-2">
-            &larr; Back to all Projects
-            </Link>
-        </div>
-        <div className="wrapper33">
+        
+        <div className="wrapper">
             <div className="row g-3 justify-content-center">
         {/* Main Column: Description and GitHub Call to Action */}
         <div className="col-lg-8">
             <div className="px-3 border-0 py-2 rounded-4">
-            
+                {/* BACK TO ALL PROJECTS BTN */}
+                <div className="navigation-btn my-2 align-self-start mt-2">
+                <Link to="/" className="btn btn-metal-dark my-2">
+                &larr; Back to all Projects
+                </Link>
+        </div>
             {/* Project Header */}
             <div className="border-bottom pb-4 mb-4">
                 {/* Project Title */}
@@ -105,16 +117,13 @@ function ProjectDetailPage() {
                 <h5 className="mt-3">{project.type.name}</h5>
                 )}
 
-                { project.client ? <>
-                <div className="d-flex flex-column align-items-start justify-content-start gap-2 mb-3">
-                <span>
-                    Client: {project.client}
-                </span>
-                </div> 
-                </> :  <><div className="d-flex flex-column align-items-start justify-content-start gap-2 mb-3">
-                <span>
+                { project.client ? <div className="d-flex align-items-baseline gap-1">
+                        <h6>Client:</h6>
+                        <p>{project.client}</p>
+                        </div> :  <><div className="d-flex flex-column align-items-start justify-content-start gap-2 mb-3">
+                <h6>
                     Personal Project
-                </span>
+                </h6>
                 </div> </>
                 }
                 
@@ -200,8 +209,8 @@ function ProjectDetailPage() {
 
             {/* Full Description */}
             <div>
-                <h4 className="fw-bold mb-3 text-dark">Project Description</h4>
-                <div className={`fs-5 lh-lg ${styles.description}`}>
+                <h4 className={`${ theme === 'dark' ? 'text-light' : 'text-dark' } mb-3`}>Project Description</h4>
+                <div className={`lh-lg ${styles.description}`}>
                 {project.description}
                 </div>
             </div>
@@ -220,10 +229,10 @@ function ProjectDetailPage() {
                 <span className={` ${ theme === 'dark' ? 'text-light' : 'text-dark' } fw-semibold`}>{project.title}</span>
                 </li>
 
-                <li className="list-group-item bg-transparent px-0 py-3">
+                {project.client && project.client !== null && (<li className="list-group-item bg-transparent px-0 py-3">
                 <small className="text-muted d-block">Client</small>
-                <span className={`fw-semibold ${ theme === 'dark' ? 'text-light' : 'text-dark' }`}>{project.client || "N/A"}</span>
-                </li>
+                <span className={`fw-semibold ${ theme === 'dark' ? 'text-light' : 'text-dark' }`}>{project.client }</span>
+                </li>)}
 
                 <li className="list-group-item bg-transparent px-0 py-3">
                 <small className="text-muted d-block">Tech Stack</small>

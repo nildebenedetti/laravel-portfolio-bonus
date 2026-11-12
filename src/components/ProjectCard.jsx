@@ -22,15 +22,15 @@ function ProjectCard({ project }) {
         <div className="card w-100 h-100 shadow-sm d-flex flex-column justify-content-between">
             <div>
                 <div className="card-top px-3 pt-3">
-                    <h3 className="project-title text-capitalize h5 fw-bold">{project.title}</h3>
+                    <h2 className="project-title text-capitalize h5 fw-bold">{project.title}</h2>
+                    <h5>{ project.type.name }</h5>
                 </div>
                 
                 <div className="card-body">
-                    <small className="d-block mb-2">
-                        <span className="fw-bold">Client:</span>
-                        <br /> 
-                        <span className="fst-italic">{project.client}</span>
-                    </small>
+                    { project.client && (<div className="d-flex align-items-baseline gap-1">
+                        <h6>Client:</h6>
+                        <p>{project.client}</p>
+                        </div>) }
 
                     {project.image && (
                         <div className={styles.imageWrapper}>
@@ -38,15 +38,24 @@ function ProjectCard({ project }) {
                         </div>
                     )}
                     
-                    <div className="type-wrapper py-2">
-                        <span className={`badge rounded-pill ${pillColors[project.type?.name] || ''}`}>
-                            {project.type?.name}
-                        </span>
-                    </div>
+                    { project.technologies && project.technologies.length > 0 && <div className="tech-stack-wrapper py-2 d-flex gap-2">
+                        { project.technologies.map( (tech) => {
+                            return (<span  key={tech.id || tech.name}
+                                        className="badge rounded-pill"
+                                        style={{ backgroundColor: tech.color }}>
+                            {tech.name}
+                        </span>);
+                        })
+
+
+                        }
+                        
+                    </div>}
                     
                     <div className="description-wrapper">
                         <p className={styles.description}>{project.description}</p>
                     </div>
+
                 </div>
             </div>
 
