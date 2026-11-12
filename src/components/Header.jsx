@@ -1,5 +1,6 @@
 import { NavLink } from "react-router";
 import useTheme from "../hooks/useTheme";
+import { FaMoon, FaSun } from "react-icons/fa";
 
 function Header() {
     const { theme, toggleTheme } = useTheme();
@@ -7,8 +8,10 @@ function Header() {
     return (
         <header>
             <nav className="jet-font navbar navbar-expand-lg bg-body-tertiary border-bottom">
-                <div className="container">
-                    <NavLink className="navbar-brand fw-semibold" to="/">Nilde B.</NavLink>
+                <div className="container-fluid">
+                    <NavLink className="navbar-brand" to="/">
+                    И
+                    </NavLink>
                     <button
                         className="navbar-toggler"
                         type="button"
@@ -18,20 +21,22 @@ function Header() {
                         <span className="navbar-toggler-icon" />
                     </button>
                     <div className="collapse navbar-collapse" id="mainNav">
-                        <ul className="navbar-nav ms-auto align-items-center">
-                            <li className="nav-item">
+                        <ul className="navbar-nav ms-auto align-items-baseline">
+                            <li className="nav-item pt-2">
                                 <NavLink className="nav-link" to="/">Home</NavLink>
                             </li>
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/contacts">Contacts</NavLink>
                             </li>
-                            <li className="nav-item ms-2">
+                            <li className="nav-item">
                                 <button
-                                    className="btn btn-outline-secondary btn-sm"
+                                    className="theme-toggle ms-2"
+                                    type="button"
                                     onClick={toggleTheme}
                                     aria-label="Cambia tema"
+                                    title="Cambia tema"
                                 >
-                                    {theme === 'light' ? '🌙' : '☀️'}
+                                    {theme === 'light' ? <FaMoon /> : <FaSun />}
                                 </button>
                             </li>
                         </ul>
