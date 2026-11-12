@@ -179,7 +179,7 @@ function HomePage() {
       <div className="container mx-auto py-4">
       <div className="welcome py-3">
         <h1>Welcome to my Portfolio</h1>
-        <p className="py-3">Feel free to wander through my projects and explore in the way you prefer: go through code by accessing GitHub repositories or watch the demos and read the provided descriptions!</p>
+        <p className="py-3 text-description">Feel free to wander through my projects however you like: dive straight into the code on GitHub, watch the demos, or read through the descriptions.</p>
       </div>
       <h2 className="pb-4">All Projects</h2>
       <div className="filterChips">
