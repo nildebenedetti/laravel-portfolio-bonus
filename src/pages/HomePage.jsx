@@ -180,12 +180,6 @@ function HomePage() {
       <div className="welcome py-3">
         <h1>Welcome to my Portfolio</h1>
         <p className="py-3">Feel free to wander through my projects and explore in the way you prefer: go through code by accessing GitHub repositories or watch the demos and read the provided descriptions!</p>
-        <div className="d-flex align-items-center gap-3">
-          <p className="mb-0">Want to know more about me?</p>
-          <a href="/contacts" className="btn-metal-dark mb-0">
-            Go to Contacts
-          </a>
-        </div>
       </div>
       <h2 className="pb-4">All Projects</h2>
       <div className="filterChips">
@@ -234,6 +228,12 @@ function HomePage() {
           </div>
         ))}
       </div>
+    <div className="d-flex flex-column align-items-center justify-content-center gap-3 my-3 pt-3">
+          <h5 className="mb-3 mt-3">Want to know more about me?</h5>
+          <a href="/contacts" className="btn-metal-dark mb-0">
+            Go to Contacts
+          </a>
+        </div>
     </div>
     </>
   ;
