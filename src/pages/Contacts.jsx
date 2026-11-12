@@ -30,30 +30,33 @@ function Contacts() {
         <br />
 
         <h3 className="my-3">About me</h3>
+        <div className="text-description">
+            <p>A Full-stack Developer with an agency background and a degree in linguistic and cultural mediation.
+            <br /><br />
+            Working 5 years in a digital marketing agency gave me a keen eye for business logics, and the intuition needed for balancing business goals with a smooth UX.
+            <br />
+            Studying languages trained me to decode complex structures and read between the lines of specifications. 
+            <br /><br />Today, I bring that analytical mindset into building with PHP (Laravel) and JavaScript (React, Node).
+            <br /><br />
+            To me, code is a tool for daydreaming between architecture and exact creativity. 
+            <br />
+            I find a special kind of satisfaction in database modeling, defining clean logic, and making data flow through Eloquent. 
+            <br />
+            I simply enjoy smoothing out friction, making things easy for the user and clear for whoever reads the codebase after me.
+            <br /><br />
+            When I’m not polishing component hierarchies or backend logic, you’ll likely find me practicing aerial acrobatics or kung fu, chasing word etymologies, or sipping tea in the city center.
+            </p>
 
-        <p>A Full-stack Developer with an agency background and a degree in linguistic and cultural mediation.
-        <br /><br />
-        Working 5 years in a digital marketing agency gave me a keen eye for business logics, and the intuition needed for balancing business goals with a smooth UX.
-        <br />
-        Studying languages trained me to decode complex structures and read between the lines of specifications. 
-        <br /><br />Today, I bring that analytical mindset into building with PHP (Laravel) and JavaScript (React, Node).
-        <br /><br />
-        To me, code is a tool for daydreaming between architecture and exact creativity. 
-        <br />
-        I find a special kind of satisfaction in database modeling, defining clean logic, and making data flow through Eloquent. 
-        <br />
-        I simply enjoy smoothing out friction, making things easy for the user and clear for whoever reads the codebase after me.
-        <br /><br />
-        When I’m not polishing component hierarchies or backend logic, you’ll likely find me practicing aerial acrobatics or kung fu, chasing word etymologies, or sipping tea in the city center.
-        </p>
-
-        <br />
+            <br />
+        </div>
 
         <h3 className="my-3">Let's Chat!</h3>
 
-        <p>Would enjoy a nice chat about coding or feel like sharing (constructive) opinions? <br/>
-        Feel free to ping me via one of the following channels!
-        </p>
+        <div className="text-description">
+            <p>Would enjoy a nice chat about coding or feel like sharing (constructive) opinions? <br/>
+            Feel free to ping me via one of the following channels!
+            </p>
+        </div>
 
         <ul className="list-unstyled py-5 d-flex flex-column align-items-center justify-content-center">
             <li className="w-100 d-flex justify-content-center mb-3">

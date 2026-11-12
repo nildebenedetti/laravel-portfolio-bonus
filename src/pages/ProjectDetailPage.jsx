@@ -30,6 +30,7 @@ function ProjectDetailPage() {
                 setError(null);
 
             } catch  (error) {
+                
 
                 console.error("error while fetching project data", error);
                 setError(error.message || "something went wrong while fetching project data");
@@ -46,7 +47,17 @@ function ProjectDetailPage() {
     }, [ id ]);
 
     if (!project) {
-        return <div className="container py-5 text-center">Caricamento in corso...</div>;
+        return <div className="container py-5 text-center">
+            <p>No Project available with provided id.</p>
+            <p> Check if you can find something interesting here!</p>    
+            {/* BACK TO ALL PROJECTS BTN */}
+            <div className="navigation-btn my-2 align-self-start mt-2">
+                <Link to="/" className="btn btn-metal-dark my-2">
+                &larr; Back to all Projects
+                </Link>
+            </div>
+
+        </div>;
     }
 
     const stackLabel = stackTypeRange.find( (item) => project.stack_type === item.value)?.label || project.stack_type;
@@ -74,17 +85,18 @@ function ProjectDetailPage() {
     }
 
     return <>
-        <div className="navigation-btn my-2 align-self-start ms-3 mt-2">
-            <Link to="/" className="btn btn-metal-dark my-2">
-            &larr; Back to all Projects
-            </Link>
-        </div>
-        <div className="wrapper33">
+        
+        <div className="wrapper">
             <div className="row g-3 justify-content-center">
         {/* Main Column: Description and GitHub Call to Action */}
         <div className="col-lg-8">
             <div className="px-3 border-0 py-2 rounded-4">
-            
+                {/* BACK TO ALL PROJECTS BTN */}
+                <div className="navigation-btn my-2 align-self-start mt-2">
+                <Link to="/" className="btn btn-metal-dark my-2">
+                &larr; Back to all Projects
+                </Link>
+        </div>
             {/* Project Header */}
             <div className="border-bottom pb-4 mb-4">
                 {/* Project Title */}
