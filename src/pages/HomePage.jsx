@@ -122,6 +122,25 @@ function HomePage() {
     });
   }
 
+  // clear handler: removes every value of a single filter group
+  const handleFilterClear = (paramKey) => {
+    setSearchParams( prevParams => {
+      const nextParams = new URLSearchParams(prevParams);
+      nextParams.delete(paramKey);
+      return nextParams;
+    });
+  }
+
+  // shared clear button: same look as the chips, shown only when the group is filtering
+  const clearButton = (paramKey, isVisible, label) => (
+    isVisible && (
+      <button type="button"
+              onClick={ () => handleFilterClear(paramKey) }
+              className="btn-metal-dark btn-filter-clear mx-1 my-2"
+              aria-label={`Clear ${label} filters`}>✕ Clear</button>
+    )
+  );
+
 
   // useMemo hook to memoize projects list
   
@@ -161,13 +180,17 @@ function HomePage() {
       <div className="welcome py-3">
         <h1>Welcome to my Portfolio</h1>
         <p className="py-3">Feel free to wander through my projects and explore in the way you prefer: go through code by accessing GitHub repositories or watch the demos and read the provided descriptions!</p>
-        <p>Want to know more about me?</p>
-        <a href="/contacts" className="btn-metal-dark mb-4">Go to Contacts</a>
+        <div className="d-flex align-items-center gap-3">
+          <p className="mb-0">Want to know more about me?</p>
+          <a href="/contacts" className="btn-metal-dark mb-0">
+            Go to Contacts
+          </a>
+        </div>
       </div>
       <h2 className="pb-4">All Projects</h2>
       <div className="filterChips">
         <div className="typeFilterChips mb-3">
-          <h5>Select Type:</h5>
+          <h6>Select Type:</h6>
           { types.map( ( type ) => {
 
             const isActive = activeTypeIds.includes(type.id.toString());
@@ -176,9 +199,10 @@ function HomePage() {
                           onClick={() => handleFilterChange('type',type.id) }
                           className={`btn-metal-dark mx-1 my-2 ${ isActive ? 'active border-light bg-secondary' : ''}`}>{type.name}{isActive && "  ✓"}</button>
           } )}
+          { clearButton('type', activeTypeIds.length > 0, 'type') }
         </div>
         <div className="stackTypesFilterChips mb-3">
-          <h5>Select Architecture:</h5>
+          <h6>Select Architecture:</h6>
           {
             stackTypeRange.map( (stackType) => {
               const isActive = activeStackTypes.includes(stackType.value);
@@ -188,9 +212,10 @@ function HomePage() {
               </button>
             })
           }
+          { clearButton('stack_type', activeStackTypes.length > 0, 'architecture') }
         </div>
         <div className="technologieFilterChips mb-3">
-          <h5>Select Technologies:</h5>
+          <h6>Select Tech Stack:</h6>
           {
             technologies.map( (tech) => {
               const isActive = activeTechIds.includes(tech.id.toString());
@@ -199,6 +224,7 @@ function HomePage() {
                             className={`btn-metal-dark mx-1 my-2 ${isActive ? 'active border-light bg-secondary' : ''}`}>{tech.name}{isActive && "  ✓"}</button>
             })
           }
+          { clearButton('technologies', activeTechIds.length > 0, 'technology') }
         </div>
       </div>
       <div className="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
